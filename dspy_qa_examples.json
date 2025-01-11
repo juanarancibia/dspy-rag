@@ -1,0 +1,82 @@
+[
+    {
+        "question": "What are the three main components that make up DSPy framework?",
+        "response": "DSPy consists of three main components: 1) Modules - which help describe AI behavior as code rather than strings, allowing you to write compositional Python code instead of brittle prompts. 2) Optimizers - which tune the prompts and weights of AI modules, working by synthesizing good few-shot examples, proposing better instructions, or building datasets for finetuning. 3) Ecosystem - which enables the open-source AI research community to improve compositional architectures, inference-time strategies, and optimizers for LM programs in a distributed way."
+    },
+    {
+        "question": "How do you implement metric evaluation in DSPy and what are the key steps?",
+        "response": "Implementing metric evaluation in DSPy involves three key steps: 1) Collect an initial development set - gathering at least 20 input examples (though 200 is better) of your task, either from existing datasets or by creating your own. You only need inputs and final outputs, not intermediate steps. 2) Define your DSPy metric - create a function that takes examples from your data and system outputs and returns a score. For simple tasks this could be accuracy, while for long-form outputs it might be a smaller DSPy program checking multiple properties. 3) Run development evaluations - test your pipeline designs against the metric to understand tradeoffs and establish a baseline for improvements. The metric itself can be optimized if it's a DSPy program by collecting examples and optimizing against a simpler scoring system."
+    },
+    {
+        "question": "What built-in modules does DSPy provide and what are their main purposes?",
+        "response": "DSPy provides several built-in modules: 1) dspy.Predict: The basic predictor that handles key forms of learning without modifying the signature. 2) dspy.ChainOfThought: Teaches the LM to think step-by-step before giving a response. 3) dspy.ProgramOfThought: Teaches the LM to output code whose execution determines the response. 4) dspy.ReAct: An agent that can use tools to implement the given signature. 5) dspy.MultiChainComparison: Can compare multiple outputs from ChainOfThought for a final prediction. Additionally, there are function-style modules like dspy.majority for basic voting to return the most popular response from a set of predictions."
+    },
+    {
+        "question": "How do you set up DSPy with OpenAI's models?",
+        "response": "To set up DSPy with OpenAI's models, first install DSPy using 'pip install -U dspy'. Then, you can authenticate either by setting the OPENAI_API_KEY environment variable or passing the api_key directly in the code. The setup requires three lines of code: import dspy, create an LM instance with 'lm = dspy.LM('openai/gpt-4o-mini', api_key='YOUR_OPENAI_API_KEY')', and configure DSPy with 'dspy.configure(lm=lm)'."
+    },
+    {
+        "question": "What's the difference between DSPy's approach to AI development compared to traditional prompting?",
+        "response": "DSPy shifts from traditional prompting to a programming paradigm. Instead of working with brittle prompts, DSPy allows developers to write compositional Python code and uses DSPy to teach language models to deliver high-quality outputs. This approach separates AI system design from specific prompting strategies, making systems more modular and maintainable. DSPy decouples interface (what the LM should do) from implementation (how to tell it to do that) through signatures, allowing the framework to infer or learn the implementation from data in the context of a larger program."
+    },
+    {
+        "question": "How does DSPy's MIPROv2 optimizer work?",
+        "response": "MIPROv2 optimizer works through three main stages: 1) Bootstrapping stage - runs your program multiple times across different inputs to collect traces of input/output behavior for each module, filtering to keep only high-scoring traces according to your metric. 2) Grounded proposal stage - previews your DSPy program's code, data, and traces, then uses them to draft potential instructions for every prompt. 3) Discrete search stage - samples mini-batches from training data, proposes combinations of instructions and traces for each prompt, evaluates candidates on mini-batches, and updates a surrogate model to improve proposals over time."
+    },
+    {
+        "question": "How do you set up a basic classification task in DSPy?",
+        "response": "To set up a basic classification task in DSPy, you can use the Predict module with a classification signature. For example, you would first import any necessary types like Literal for defined categories, create a Classify signature class with input fields for the text to classify and output fields for the classification label and confidence score. Then instantiate the classifier with 'classify = dspy.Predict(Classify)' and call it with your input text. The system will return a Prediction object containing the classification results."
+    },
+    {
+        "question": "What options are available for running DSPy with local language models?",
+        "response": "DSPy offers two main options for running local language models: 1) Using Ollama for laptop deployment - install Ollama, launch its server with your chosen LM using 'ollama run llama3.2:1b', then connect using DSPy with 'lm = dspy.LM('ollama_chat/llama3.2', api_base='http://localhost:11434', api_key='')'. 2) Using SGLang for GPU servers - install SGLang and launch its server with your LM, then connect to it as an OpenAI-compatible endpoint using 'lm = dspy.LM' with appropriate configuration parameters for your local setup."
+    },
+    {
+        "question": "How can you optimize a DSPy metric that is itself a DSPy program?",
+        "response": "When a DSPy metric is itself a DSPy program, you can optimize it by leveraging the fact that the metric's output is usually a simple value (like a score out of 5). This makes the metric's own metric easy to define and optimize. The process involves collecting a few examples of metric evaluations and their expected scores, then using DSPy's optimization capabilities to improve the metric program itself. This iterative process helps refine how the metric evaluates system outputs."
+    },
+    {
+        "question": "What is the purpose of DSPy's ChainOfThought module and how does it differ from basic Predict?",
+        "response": "DSPy's ChainOfThought module enhances the basic Predict module by teaching the language model to think step-by-step before providing a final response. While Predict simply maps inputs to outputs according to the signature, ChainOfThought injects a 'reasoning' step before generating the output fields. This process typically leads to higher quality outputs as it encourages the model to break down complex tasks into smaller, logical steps. The module automatically adds a reasoning field to the output, which can be accessed alongside the final answer, providing transparency into the model's decision-making process."
+    },
+    {
+        "question": "How does DSPy handle composing multiple modules for multi-hop search?",
+        "response": "DSPy handles multi-hop search composition through Python classes that inherit from dspy.Module. A typical implementation like the Hop class initializes with parameters for number of documents and hops, and contains sub-modules like generate_query and append_notes as ChainOfThought instances. The forward method implements the search logic, iteratively using these modules to generate queries, search for context, and accumulate information. The modules can be called freely within any control flow structure, with DSPy handling the tracing of LM calls at compile time."
+    },
+    {
+        "question": "What are the available options for authentication when using different LM providers in DSPy?",
+        "response": "DSPy supports various authentication methods for different LM providers: 1) OpenAI requires OPENAI_API_KEY environment variable or direct api_key parameter. 2) Anthropic needs ANTHROPIC_API_KEY. 3) Databricks uses automatic authentication via their SDK, or DATABRICKS_API_KEY and DATABRICKS_API_BASE. 4) Azure requires AZURE_API_KEY, AZURE_API_BASE, AZURE_API_VERSION, and optionally AZURE_AD_TOKEN and AZURE_API_TYPE. Other providers supported through LiteLLM each have their own specific API key requirements, such as ANYSCALE_API_KEY for Anyscale or TOGETHERAI_API_KEY for Together AI."
+    },
+    {
+        "question": "How can you compose different DSPy optimizers together for better results?",
+        "response": "DSPy optimizers can be composed in several ways: 1) You can run MIPROv2 and use its output as input to MIPROv2 again or to BootstrapFinetune for improved results. 2) You can extract the top-5 candidate programs from an optimizer and build a dspy.Ensemble of them. 3) You can use dspy.BetterTogether to combine different optimization approaches. This composability allows you to scale both inference-time compute (through ensembles) and pre-inference time compute (optimization budget) systematically."
+    },
+    {
+        "question": "What information is required to optimize a DSPy system using BootstrapFinetuning?",
+        "response": "To optimize a DSPy system using BootstrapFinetune, you need: 1) A development set with training examples - only inputs and final outputs are required, not intermediate steps. 2) A metric function that measures output quality - this takes examples and system outputs and returns a score. 3) The DSPy program to optimize. BootstrapFinetune works by building datasets for your modules and using them to finetune the LM weights in your system. The optimizer will create training data from your examples and use the metric to evaluate and improve the system's performance."
+    },
+    {
+        "question": "How does DSPy's ReAct module differ from ChainOfThought?",
+        "response": "The ReAct module is an agent-based module that extends beyond ChainOfThought by incorporating the ability to use tools to implement the given signature. While ChainOfThought focuses on step-by-step reasoning, ReAct can actively interact with provided tools (like calculators, search functions, or other utilities) during its reasoning process. This makes ReAct suitable for tasks that require external information or computation beyond what the language model can do directly."
+    },
+    {
+        "question": "What is the role of signatures in DSPy and how do they work?",
+        "response": "Signatures in DSPy are declarative specifications that define the behavior of modules by specifying their input and output fields. They serve to decouple the interface (what the LM should do) from the implementation (how to tell it to do that). Signatures can be defined either as simple strings like 'question -> answer' or as classes inheriting from dspy.Signature with InputField and OutputField declarations. They allow DSPy to infer or learn the implementation from data in the context of the larger program, making modules more portable and optimizable."
+    },
+    {
+        "question": "What is DSPy's approach to evaluation metrics for long-form outputs?",
+        "response": "For long-form outputs, DSPy recommends creating a smaller DSPy program that checks multiple properties of the output, rather than using simple metrics like accuracy. This metric program can itself be optimized since its output is usually a simple value. The process involves: 1) Defining what makes outputs good or bad 2) Creating a function that evaluates multiple aspects of the output 3) Starting simple and iterating on the metric over time 4) Potentially optimizing the metric itself by collecting examples of good evaluations. The goal is to develop metrics that can consistently measure improvement in system outputs."
+    },
+    {
+        "question": "How does DSPy handle caching and API calls to language models?",
+        "response": "DSPy provides a unified API for language model calls and includes automatic caching utilities. When you configure an LM using dspy.configure(lm=lm), you can make direct calls to the LM which will be automatically cached. This works across different providers and model types, whether calling the LM directly or through modules. The caching helps reduce API costs during development and optimization by reusing results from identical queries, while maintaining a consistent interface regardless of the underlying LM provider."
+    },
+    {
+        "question": "What are the key differences between the optimizers BootstrapRS and MIPROv2 in DSPy?",
+        "response": "The key differences between BootstrapRS and MIPROv2 optimizers are in their approach: BootstrapRS focuses on synthesizing good few-shot examples for every module, working primarily through example generation and selection. MIPROv2, on the other hand, has a more comprehensive approach with three stages: bootstrapping to collect high-scoring traces, grounded proposal to draft potential instructions, and discrete search to evaluate combinations of instructions and traces. MIPROv2 can often achieve better results by optimizing both the examples and the instructions themselves."
+    },
+    {
+        "question": "How can you incorporate DSPy assertions into your programs and what are they used for?",
+        "response": "DSPy assertions are part of the program architectures developed by the community to help ensure output quality and consistency. They can be incorporated into DSPy programs to validate outputs and enforce constraints on the language model's behavior. Assertions act as checkpoints within your program flow, allowing you to specify conditions that outputs must meet. This helps in creating more reliable and consistent AI systems by providing a way to verify and enforce output requirements programmatically."
+    }
+]

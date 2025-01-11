@@ -121,4 +121,4 @@ dmypy.json
 cython_debug/
 
 #DBs
-**/db/*
+**/embeddings_db/*
