@@ -3,7 +3,7 @@
 ## Overview
 This repository serves as a baseline for [Implementing RAG with DSPy: A Technical Guide](https://medium.com/@arancibia.juan22/implementing-rag-with-dspy-a-technical-guide-a6ae15f6a455) available on Medium. The main component is the Jupyter Notebook file, dspy_docs_rag.ipynb, which illustrates the process of loading, splitting, and embedding Markdown documents using the LangChain library within a Retrieval-Augmented Generation (RAG) framework.
 
-## Main Notebook Contents
+## Notebook Contents
 The [notebook file](./dspy_docs_rag.ipynb) includes the following key sections:
 - Loading Markdown Files: Demonstrates how to load Markdown documents from a specified directory using LangChain's DirectoryLoader.
 - Document Splitting: Shows the implementation of a text splitter that divides the loaded documents into smaller, manageable chunks for easier processing.
