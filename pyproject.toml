@@ -18,7 +18,8 @@ unstructured = {extras = ["md"], version = "^0.16.12"}
 markdown = "^3.7"
 ipykernel = "^6.29.5"
 nltk = "^3.9.1"
-dspy = "^2.5.43"
+dspy = "^2.6.0rc8"
+uvicorn = ">=0.22.0,<0.23.0"
 
 [build-system]
 requires = ["poetry-core"]
