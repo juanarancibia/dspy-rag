@@ -1,0 +1,101 @@
+{
+  "generateQueries.predict": {
+    "lm": null,
+    "traces": [],
+    "train": [],
+    "demos": [
+      {
+        "question": "How does DSPy handle composing multiple modules for multi-hop search?",
+        "response": "DSPy handles multi-hop search composition through Python classes that inherit from dspy.Module. A typical implementation like the Hop class initializes with parameters for number of documents and hops, and contains sub-modules like generate_query and append_notes as ChainOfThought instances. The forward method implements the search logic, iteratively using these modules to generate queries, search for context, and accumulate information. The modules can be called freely within any control flow structure, with DSPy handling the tracing of LM calls at compile time."
+      }
+    ],
+    "signature": {
+      "instructions": "You are tasked with generating highly precise and contextually relevant search queries for document retrieval in a high-stakes scenario where the accuracy of the retrieved documents directly impacts critical decision-making. The user message will contain a complex technical query, and your goal is to reason step-by-step to produce a set of 5 search queries that are most likely to retrieve the most relevant and accurate documents. Ensure that each query is carefully crafted to maximize the relevance of the retrieved information, as any inaccuracy could lead to significant consequences. Your reasoning should be detailed and logical, and the queries should be concise yet comprehensive enough to cover all aspects of the user's message.",
+      "fields": [
+        {
+          "prefix": "User Message:",
+          "description": "User message to generate queries for"
+        },
+        {
+          "prefix": "Reasoning: Let's think step by step in order to",
+          "description": "${reasoning}"
+        },
+        {
+          "prefix": "Queries:",
+          "description": "5 search queries to retrieve documents based on user message"
+        }
+      ]
+    }
+  },
+  "respond.predict": {
+    "lm": null,
+    "traces": [],
+    "train": [],
+    "demos": [
+      {
+        "question": "How does DSPy handle composing multiple modules for multi-hop search?",
+        "response": "DSPy handles multi-hop search composition through Python classes that inherit from dspy.Module. A typical implementation like the Hop class initializes with parameters for number of documents and hops, and contains sub-modules like generate_query and append_notes as ChainOfThought instances. The forward method implements the search logic, iteratively using these modules to generate queries, search for context, and accumulate information. The modules can be called freely within any control flow structure, with DSPy handling the tracing of LM calls at compile time."
+      }
+    ],
+    "signature": {
+      "instructions": "Given the fields `context` (a list of retrieved documents) and `queries` (a list of search queries generated from the user's message), generate a detailed and accurate `response` that directly addresses the user's query. The response should be based solely on the information contained in the provided `context` documents. Additionally, provide a step-by-step `reasoning` that explains how the response was derived from the context and queries. Ensure the response is coherent, relevant, and free from any information not supported by the retrieved documents.",
+      "fields": [
+        {
+          "prefix": "Context:",
+          "description": "Retrieved documents"
+        },
+        {
+          "prefix": "Queries:",
+          "description": "Queries based to answer based on the user message"
+        },
+        {
+          "prefix": "Reasoning: Let's think step by step in order to",
+          "description": "${reasoning}"
+        },
+        {
+          "prefix": "Response:",
+          "description": "Response to the queries"
+        }
+      ]
+    }
+  },
+  "hallucinationDetector.predict": {
+    "lm": null,
+    "traces": [],
+    "train": [],
+    "demos": [
+      {
+        "question": "How does DSPy handle composing multiple modules for multi-hop search?",
+        "response": "DSPy handles multi-hop search composition through Python classes that inherit from dspy.Module. A typical implementation like the Hop class initializes with parameters for number of documents and hops, and contains sub-modules like generate_query and append_notes as ChainOfThought instances. The forward method implements the search logic, iteratively using these modules to generate queries, search for context, and accumulate information. The modules can be called freely within any control flow structure, with DSPy handling the tracing of LM calls at compile time."
+      }
+    ],
+    "signature": {
+      "instructions": "You are a meticulous fact-checker tasked with ensuring the accuracy and reliability of generated responses. Your role is to assess whether the provided response contains only information that is supported by the retrieved documents. Carefully analyze the response and the documents, and provide a step-by-step reasoning process to determine if the response includes any unsupported claims or \"hallucinations.\" Your output should include a boolean value indicating whether the response contains hallucinations, along with a detailed explanation of your reasoning.",
+      "fields": [
+        {
+          "prefix": "Response:",
+          "description": "Response to assess"
+        },
+        {
+          "prefix": "Documents:",
+          "description": "Retrieved documents"
+        },
+        {
+          "prefix": "Reasoning: Let's think step by step in order to",
+          "description": "${reasoning}"
+        },
+        {
+          "prefix": "Hallucination:",
+          "description": "Whether the response contains information not present in the retrieved documents"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "dependency_versions": {
+      "python": "3.10",
+      "dspy": "2.6.0rc8",
+      "cloudpickle": "3.1"
+    }
+  }
+}
